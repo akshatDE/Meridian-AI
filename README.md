@@ -24,24 +24,9 @@ Meridian AI combines two workflows in one service:
 
 ## Architecture
 
-```
-Browser (React)
-    │
-    ▼
-FastAPI backend ──────────────────────────────────────────────┐
-    │                                                         │
-    ├── Document Q&A (RAG)                                    │
-    │     PDF → chunks → embeddings → vector store            │
-    │     question → top-k chunks → Gemini → grounded answer  │
-    │                                                         │
-    └── Purchase audit (agents + middleware)                  │
-          Risk ─┐                                             │
-          Tax  ─┼─ tools ─► Gemini ─► CFO memo + decision     │
-          Control┘                                            │
-                                                              │
- Local mode:  Gemini API · Chroma · local disk  ◄─────────────┤
- Cloud mode:  Gemini · Vertex AI Vector Search · Cloud Storage ◄┘
-```
+![Meridian AI architecture: React frontend, FastAPI backend on Cloud Run, Gemini and Vertex AI Vector Search, Cloud Storage, Secret Manager and the CI/CD pipeline](meridian_arch.png)
+
+The diagram shows the cloud deployment; in local mode (`APP_MODE=local`) Chroma and local disk replace Vertex AI Vector Search and Cloud Storage.
 
 Dependency direction: `api → rag, agent → config, logger`.
 
